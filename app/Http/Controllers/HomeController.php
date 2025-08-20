@@ -80,13 +80,24 @@ class HomeController extends Controller
         $AVG = LeavesAdmin::where('status', 'approved')->where('leave_type', 'daily')->avg('total');
         $total_leaves = LeavesAdmin::where('status', 'approved')->where('leave_type', 'daily')->sum('total');
         $pendding_leaves = LeavesAdmin::where('status', 'Pending')->where('leave_type', 'daily')->sum('total');
+        $recentLeaves = LeavesAdmin::with('employee') // only selected columns from employee
+            ->where('status', 'requested')
+            ->latest('created_at')
+            ->take(5)
+            ->get();
 
-
+        $leave_progress = LeavesAdmin::with('employee')
+            ->selectRaw('rec_id, SUM(total) as total_days')
+            ->where('status', 'approved')
+            ->where('leave_type', 'daily')
+            ->groupBy('rec_id')
+            ->orderBy('total_days','desc')
+            ->get();
 
         // Optional: round to 2 decimal places
         $active_percentage = round($active_percentage, 2);
         $inactive_percentage = round($inactive_percentage, 2);
-        return view('dashboard.dashboard', compact('employees6', 'projects', 'months', 'totalSalaries', 'staffCounts', 'active_employees', 'inactive_employees', 'active_percentage', 'inactive_percentage', 'AVG', 'total_leaves', 'pendding_leaves'));
+        return view('dashboard.dashboard', compact('employees6', 'projects', 'months', 'totalSalaries', 'staffCounts', 'active_employees', 'inactive_employees', 'active_percentage', 'inactive_percentage', 'AVG', 'total_leaves', 'pendding_leaves', 'recentLeaves', 'leave_progress'));
     }
 
     public function generatePDF(Request $request)
