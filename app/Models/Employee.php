@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Attendance;
 use App\Models\User;
+use App\Models\LeavesAdmin;
 
 
 
@@ -20,5 +21,9 @@ class Employee extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function Leaves()
+    {
+        return $this->hasMany(LeavesAdmin::class);
     }
 }

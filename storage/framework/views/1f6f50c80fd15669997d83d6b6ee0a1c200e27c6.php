@@ -1,3 +1,6 @@
+<?php
+    use Carbon\Carbon;
+?>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="assets/dashboard/vendors/js/vendor.bundle.base.js"></script>
@@ -6,32 +9,32 @@
 <!-- Plugin js for this page -->
 <script>
 
-document.addEventListener('DOMContentLoaded', function() {
-    const shareBtn = document.getElementById('Share');
-    if(shareBtn) {
-        shareBtn.addEventListener('click', function() {
-            alert('Button clicked!');
-        });
-    }
-});
-const Print = () => {
-    const report = document.querySelector('.print-report');
-
-    // Convert all canvases to responsive images
-    report.querySelectorAll('canvas').forEach(c => {
-        const img = document.createElement('img');
-        img.src = c.toDataURL();
-        img.style.width = '100%'; // make it scale to container
-        img.style.height = 'auto';
-        c.replaceWith(img);
+    document.addEventListener('DOMContentLoaded', function () {
+        const shareBtn = document.getElementById('Share');
+        if (shareBtn) {
+            shareBtn.addEventListener('click', function () {
+                alert('Button clicked!');
+            });
+        }
     });
+    const Print = () => {
+        const report = document.querySelector('.print-report');
 
-    // Clone and remove elements with 'not-print' class
-    const clone = report.cloneNode(true);
-    clone.querySelectorAll('.not-print').forEach(el => el.remove());
+        // Convert all canvases to responsive images
+        report.querySelectorAll('canvas').forEach(c => {
+            const img = document.createElement('img');
+            img.src = c.toDataURL();
+            img.style.width = '100%'; // make it scale to container
+            img.style.height = 'auto';
+            c.replaceWith(img);
+        });
 
-    const w = window.open('', '', 'height=800,width=1000');
-    w.document.write(`
+        // Clone and remove elements with 'not-print' class
+        const clone = report.cloneNode(true);
+        clone.querySelectorAll('.not-print').forEach(el => el.remove());
+
+        const w = window.open('', '', 'height=800,width=1000');
+        w.document.write(`
         <html>
         <head>
             <title>Print Report</title>
@@ -49,12 +52,12 @@ const Print = () => {
         <body>${clone.innerHTML}</body>
         </html>
     `);
-    w.document.close();
-    w.focus();
-    setTimeout(() => { w.print(); w.close(); }, 500);
-};
+        w.document.close();
+        w.focus();
+        setTimeout(() => { w.print(); w.close(); }, 500);
+    };
 
-    
+
 </script>
 <script src="assets/dashboard/vendors/chart.js/chart.umd.js"></script>
 <script src="assets/dashboard/vendors/progressbar.js/progressbar.min.js"></script>
@@ -187,7 +190,9 @@ const Print = () => {
                                                         <p class="text-muted">Position: <?php echo e($usercount->position); ?></p>
                                                         <p class="text-muted">Employee ID: <?php echo e($usercount->employee_id); ?></p>
                                                         <div class="small doj text-muted">Date of Join :
-                                                            <?php echo e($usercount->created_at); ?></div>
+                                                            <?php echo e($usercount->created_at); ?>
+
+                                                        </div>
                                                         <a href="<?php echo e(url('employee_pdf/' . $usercount->employee_id)); ?>"
                                                             class="btn btn-outline-success btn-sm"> <i class="fa fa-print"></i>
                                                             Print Details</a>
@@ -825,11 +830,13 @@ const Print = () => {
                             </ul>
                             <div>
                                 <div class="btn-wrapper">
-                                    <a href="mailto:employees@mgtwell.com?subject=Report&body=Please find the report attached." class="btn btn-otline-dark align-items-center"><i class="icon-share"></i>
+                                    <a href="mailto:employees@mgtwell.com?subject=Report&body=Please find the report attached."
+                                        class="btn btn-otline-dark align-items-center"><i class="icon-share"></i>
                                         Share</a>
                                     <a href="#" class="btn btn-otline-dark" onclick="Print()"><i class="icon-printer"></i>
                                         Print</a>
-                                    <a href="#" class="btn btn-primary text-white me-0" onclick="Print()"><i class="icon-download"></i> Export</a>
+                                    <a href="#" class="btn btn-primary text-white me-0" onclick="Print()"><i
+                                            class="icon-download"></i> Export</a>
                                 </div>
                             </div>
                         </div>
@@ -928,14 +935,12 @@ const Print = () => {
                                                     <div class="card-body">
                                                         <div class="d-sm-flex justify-content-between align-items-start">
                                                             <div>
-                                                                <h4 class="card-title card-title-dash">Pending Requests</h4>
-                                                                <p class="card-subtitle card-subtitle-dash">You have 50+ new
+                                                                <h4 class="card-title card-title-dash">Leave Belance</h4>
+                                                                <p class="card-subtitle card-subtitle-dash">You have 10+ new
                                                                     requests</p>
                                                             </div>
                                                             <div>
-                                                                <button class="btn btn-primary btn-lg text-white mb-0 me-0"
-                                                                    type="button"><i class="mdi mdi-account-plus"></i>Add new
-                                                                    member</button>
+
                                                             </div>
                                                         </div>
                                                         <div class="table-responsive  mt-1">
@@ -952,12 +957,12 @@ const Print = () => {
                                                                             </div>
                                                                         </th>
                                                                         <th>Employee Name</th>
-                                                                        <th>Postions</th>
                                                                         <th>Leave Progress</th>
                                                                         <th>Status</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
+                                                                    <?php $__currentLoopData = $leave_progress; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $leaveCount): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                                     <tr>
                                                                         <td>
                                                                             <div class="form-check form-check-flat mt-0">
@@ -970,23 +975,21 @@ const Print = () => {
                                                                         </td>
                                                                         <td>
                                                                             <div class="d-flex ">
-                                                                                <img src="assets/dashboard/images/faces/face1.jpg"
-                                                                                    alt="">
+                                                                                <img src=" <?php echo e(URL::to('/assets/images/' . $leaveCount->employee->profile)); ?> "
+                                                                                    alt="<?php echo e($leaveCount->employee->name); ?>">
                                                                                 <div>
-                                                                                    <h6>Brandon Washington</h6>
-                                                                                    <p>Head admin</p>
+                                                                                    <h6><?php echo e($leaveCount->employee->name); ?></h6>
+                                                                                    <p><?php echo e($leaveCount->employee->position); ?></p>
                                                                                 </div>
                                                                             </div>
                                                                         </td>
-                                                                        <td>
-                                                                            <p>M&E Officer</p>
-                                                                        </td>
+
                                                                         <td>
                                                                             <div>
                                                                                 <div
                                                                                     class="d-flex justify-content-between align-items-center mb-1 max-width-progress-wrap">
-                                                                                    <p class="text-success">79%</p>
-                                                                                    <p>12/30</p>
+                                                                                    <p class="text-success"><?php echo e(round($leaveCount->total_days* 100/30,2)); ?>%</p>
+                                                                                    <p><?php echo e($leaveCount->total_days); ?>/30</p>
                                                                                 </div>
                                                                                 <div class="progress progress-md">
                                                                                     <div class="progress-bar bg-success"
@@ -995,184 +998,8 @@ const Print = () => {
                                                                                         aria-valuemax="100"></div>
                                                                                 </div>
                                                                             </div>
-                                                                        </td>
-                                                                        <td>
-                                                                            <div class="badge badge-opacity-warning">In progress
-                                                                            </div>
-                                                                        </td>
                                                                     </tr>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <div class="form-check form-check-flat mt-0">
-                                                                                <label class="form-check-label">
-                                                                                    <input type="checkbox"
-                                                                                        class="form-check-input"
-                                                                                        aria-checked="false"><i
-                                                                                        class="input-helper"></i></label>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td>
-                                                                            <div class="d-flex">
-                                                                                <img src="assets/dashboard/images/faces/face2.jpg"
-                                                                                    alt="">
-                                                                                <div>
-                                                                                    <h6>Laura Brooks</h6>
-                                                                                    <p>Head admin</p>
-                                                                                </div>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td>
-                                                                            <p>M&E Officer</p>
-                                                                        </td>
-                                                                        <td>
-                                                                            <div>
-                                                                                <div
-                                                                                    class="d-flex justify-content-between align-items-center mb-1 max-width-progress-wrap">
-                                                                                    <p class="text-success">65%</p>
-                                                                                    <p>12/30</p>
-                                                                                </div>
-                                                                                <div class="progress progress-md">
-                                                                                    <div class="progress-bar bg-success"
-                                                                                        role="progressbar" style="width: 65%"
-                                                                                        aria-valuenow="65" aria-valuemin="0"
-                                                                                        aria-valuemax="100"></div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td>
-                                                                            <div class="badge badge-opacity-warning">In progress
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <div class="form-check form-check-flat mt-0">
-                                                                                <label class="form-check-label">
-                                                                                    <input type="checkbox"
-                                                                                        class="form-check-input"
-                                                                                        aria-checked="false"><i
-                                                                                        class="input-helper"></i></label>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td>
-                                                                            <div class="d-flex">
-                                                                                <img src="assets/dashboard/images/faces/face3.jpg"
-                                                                                    alt="">
-                                                                                <div>
-                                                                                    <h6>Wayne Murphy</h6>
-                                                                                    <p>Head admin</p>
-                                                                                </div>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td>
-                                                                            <p>M&E Officer</p>
-                                                                        </td>
-                                                                        <td>
-                                                                            <div>
-                                                                                <div
-                                                                                    class="d-flex justify-content-between align-items-center mb-1 max-width-progress-wrap">
-                                                                                    <p class="text-success">65%</p>
-                                                                                    <p>12/30</p>
-                                                                                </div>
-                                                                                <div class="progress progress-md">
-                                                                                    <div class="progress-bar bg-warning"
-                                                                                        role="progressbar" style="width: 38%"
-                                                                                        aria-valuenow="38" aria-valuemin="0"
-                                                                                        aria-valuemax="100"></div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td>
-                                                                            <div class="badge badge-opacity-warning">In progress
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <div class="form-check form-check-flat mt-0">
-                                                                                <label class="form-check-label">
-                                                                                    <input type="checkbox"
-                                                                                        class="form-check-input"
-                                                                                        aria-checked="false"><i
-                                                                                        class="input-helper"></i></label>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td>
-                                                                            <div class="d-flex">
-                                                                                <img src="assets/dashboard/images/faces/face4.jpg"
-                                                                                    alt="">
-                                                                                <div>
-                                                                                    <h6>Matthew Bailey</h6>
-                                                                                    <p>Head admin</p>
-                                                                                </div>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td>
-                                                                            <p>M&E Officer</p>
-                                                                        </td>
-                                                                        <td>
-                                                                            <div>
-                                                                                <div
-                                                                                    class="d-flex justify-content-between align-items-center mb-1 max-width-progress-wrap">
-                                                                                    <p class="text-success">65%</p>
-                                                                                    <p>12/30</p>
-                                                                                </div>
-                                                                                <div class="progress progress-md">
-                                                                                    <div class="progress-bar bg-danger"
-                                                                                        role="progressbar" style="width: 15%"
-                                                                                        aria-valuenow="15" aria-valuemin="0"
-                                                                                        aria-valuemax="100"></div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td>
-                                                                            <div class="badge badge-opacity-warning">In Progress
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <div class="form-check form-check-flat mt-0">
-                                                                                <label class="form-check-label">
-                                                                                    <input type="checkbox"
-                                                                                        class="form-check-input"
-                                                                                        aria-checked="false"><i
-                                                                                        class="input-helper"></i></label>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td>
-                                                                            <div class="d-flex">
-                                                                                <img src="assets/dashboard/images/faces/face5.jpg"
-                                                                                    alt="">
-                                                                                <div>
-                                                                                    <h6>Katherine Butler</h6>
-                                                                                    <p>Head admin</p>
-                                                                                </div>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td>
-                                                                            <p>M&E Officer</p>
-                                                                        </td>
-                                                                        <td>
-                                                                            <div>
-                                                                                <div
-                                                                                    class="d-flex justify-content-between align-items-center mb-1 max-width-progress-wrap">
-                                                                                    <p class="text-success">100%</p>
-                                                                                    <p>12/30</p>
-                                                                                </div>
-                                                                                <div class="progress progress-md">
-                                                                                    <div class="progress-bar bg-success"
-                                                                                        role="progressbar" style="width: 100%"
-                                                                                        aria-valuenow="100" aria-valuemin="0"
-                                                                                        aria-valuemax="100"></div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td>
-                                                                            <div class="badge badge-opacity-success">Completed
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
+                                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                 </tbody>
                                                             </table>
                                                         </div>
@@ -1200,55 +1027,56 @@ const Print = () => {
                                                                 </div>
                                                                 <div class="list-wrapper">
                                                                     <ul class="todo-list todo-list-rounded">
+                                                                        <?php $__empty_1 = true; $__currentLoopData = $recentLeaves; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $leave): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                                                            <?php if($leave->employee): ?> 
+                                                                                <li class="d-block">
+                                                                                    <div class="form-check w-100">
+                                                                                        <label class="form-check-label">
+                                                                                            <input class="checkbox" type="checkbox">
+                                                                                            <?php echo e($leave->employee->name); ?> requested new
+                                                                                            <?php echo e($leave->leave_category); ?>
 
-                                                                        <li class="d-block">
-                                                                            <div class="form-check w-100">
-                                                                                <label class="form-check-label">
-                                                                                    <input class="checkbox" type="checkbox">
-                                                                                    Sayed Safarullah Pacha requested new annaul
-                                                                                    leave <i class="input-helper rounded"></i>
-                                                                                </label>
-                                                                                <div class="d-flex mt-2">
-                                                                                    <div class="ps-4 text-small me-3">23 August
-                                                                                        2025</div>
-                                                                                    <div
-                                                                                        class="badge badge-opacity-warning me-3">
-                                                                                        Due to tomarrow</div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li>
-                                                                            <div class="form-check w-100">
-                                                                                <label class="form-check-label">
-                                                                                    <input class="checkbox" type="checkbox">
-                                                                                    Waris Stanikzay recently requested new sick
-                                                                                    leave <i class="input-helper rounded"></i>
-                                                                                </label>
-                                                                                <div class="d-flex mt-2">
-                                                                                    <div class="ps-4 text-small me-3">24 August
-                                                                                        2025</div>
-                                                                                    <div
-                                                                                        class="badge badge-opacity-success me-3">
-                                                                                        Done</div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li class="border-bottom-0">
-                                                                            <div class="form-check w-100">
-                                                                                <label class="form-check-label">
-                                                                                    <input class="checkbox" type="checkbox">
-                                                                                    Nawidullah Assadzay requested annual leave!
-                                                                                    <i class="input-helper rounded"></i>
-                                                                                </label>
-                                                                                <div class="d-flex mt-2">
-                                                                                    <div class="ps-4 text-small me-3">14 August
-                                                                                        2025</div>
-                                                                                    <div
-                                                                                        class="badge badge-opacity-danger me-3">
-                                                                                        Expired</div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </li>
+                                                                                            <i class="input-helper rounded"></i>
+                                                                                        </label>
+                                                                                        <div class="d-flex mt-2">
+                                                                                            <div class="ps-4 text-small me-3">
+                                                                                                From: <?php echo e($leave->from_date); ?> To:
+                                                                                                <?php echo e($leave->to_date); ?>
+
+                                                                                            </div>
+                                                                                            <?php
+                                                                                                $fromDate = \Carbon\Carbon::parse($leave->from_date);
+                                                                                                $today = \Carbon\Carbon::today();
+                                                                                                $tomorrow = \Carbon\Carbon::tomorrow();
+
+                                                                                                if ($fromDate->isToday()) {
+                                                                                                    $badgeClass = 'badge badge-opacity-danger';
+                                                                                                    $badgeText = 'Today';
+                                                                                                } elseif ($fromDate->lt($today)) {
+                                                                                                    $badgeClass = 'badge badge-opacity-danger';
+                                                                                                    $badgeText = 'Expired';
+                                                                                                } elseif ($fromDate->isSameDay($tomorrow)) {
+                                                                                                    $badgeClass = 'badge badge-opacity-warning';
+                                                                                                    $badgeText = 'Tomorrow';
+                                                                                                } else {
+                                                                                                    $badgeClass = 'badge badge-opacity-info';
+                                                                                                    $badgeText = $fromDate->format('M d, Y');
+                                                                                                }
+                                                                                            ?>
+                                                                                            <div>
+                                                                                                <div class="<?php echo e($badgeClass); ?> me-3">
+                                                                                                    <?php echo e($badgeText); ?>
+
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                            <?php endif; ?>
+                                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                                                                            <span>No Leaves Found...!</span>
+                                                                        <?php endif; ?>
+
                                                                     </ul>
                                                                 </div>
                                                             </div>

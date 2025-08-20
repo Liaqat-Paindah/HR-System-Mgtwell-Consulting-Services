@@ -16,4 +16,9 @@ class LeavesAdmin extends Model
         'day',
         'leave_reason',
     ];
+        public function employee()
+    {
+        // Each leave belongs to one employee
+        return $this->belongsTo(Employee::class, 'rec_id', 'employee_id');
+    }
 }
